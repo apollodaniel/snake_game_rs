@@ -45,7 +45,9 @@ pub mod snake_game{
         }
 
         pub fn draw(&self, c: piston_window::Context, g: &mut piston_window::G2d,){
-            piston_window::rectangle(self.color, [self.position[0], self.position[1],self.scale, self.scale], c.transform, g)
+            for (index,snake_cell) in self.body.iter().enumerate() {
+                piston_window::rectangle(self.color, [snake_cell[0], snake_cell[1],self.scale, self.scale], c.transform, g);
+            }
         }
 
         pub fn change_direction(&mut self, key: piston::Key){
@@ -60,10 +62,47 @@ pub mod snake_game{
             }
         }
 
-        pub fn update(&mut self){
+        pub fn update(&mut self, apple: &mut Apple){
+            // set current position
+
+            if self.position == apple.position{
+                *apple = Apple::new();
+                self.body.push(self.position);
+            }
+            
             self.position = [ (self.direction.value()[0]*get_cell_size()) + self.position[0], (self.direction.value()[1]*get_cell_size()) + self.position[1]];
-            //self.position = self.direction.value() * get_cell_size();
+            
+            let mut old_pos = self.body[0];
+            self.body[0] = self.position;
+            for pos in self.body[1..].iter_mut(){
+                let current_pos = pos.clone();
+                *pos = old_pos;
+                old_pos = current_pos;
+            }
+
         }
     }
+
+
+    pub struct Apple{
+        pub position: [f64;2],
+        pub color: [f32;4],
+        pub scale: f64
+    }
+
+    impl Apple {
+        pub fn new()->Apple{
+            let random_position: [f64;2] = 
+            [
+                get_cell_size()*rand::Rng::gen_range(&mut rand::rngs::OsRng, 0..CELL_COUNT as u64) as f64,
+                get_cell_size()*rand::Rng::gen_range(&mut rand::rngs::OsRng, 0..CELL_COUNT as u64) as f64,
+            ];
+            Apple { position: random_position, color: [1.0,0.0,0.0,1.0], scale: get_cell_size() }
+        }
+        pub fn draw(&self, c: piston_window::Context, g: &mut piston_window::G2d,){
+            piston_window::rectangle(self.color, [self.position[0], self.position[1],self.scale, self.scale], c.transform, g)
+        }
+    }
+
 
 }
