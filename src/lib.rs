@@ -62,9 +62,8 @@ pub mod snake_game{
             }
         }
 
-        pub fn update(&mut self, apple: &mut Apple){
+        pub fn update(&mut self, apple: &mut Apple) -> bool{
             // set current position
-
             if self.position == apple.position{
                 *apple = Apple::new();
                 self.body.push(self.position);
@@ -91,9 +90,12 @@ pub mod snake_game{
                 old_pos = current_pos;
             }
 
+            return self.body[1..].iter().any(|f|{
+                *f == self.position   
+            });
+
         }
     }
-
 
     pub struct Apple{
         pub position: [f64;2],

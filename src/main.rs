@@ -1,4 +1,4 @@
-use piston::{EventLoop, PressEvent, UpdateEvent};
+use piston::{CloseArgs, CloseEvent, EventLoop, PressEvent, UpdateEvent, Window};
 use snake_game_piston::snake_game::{self, Apple};
 
 
@@ -27,8 +27,10 @@ fn main() {
             let elapsed = last_update.elapsed();
             if elapsed >= std::time::Duration::from_secs_f64(1.0 / frame_rate) {
                 last_update = std::time::Instant::now();
-
-                snake.update(&mut apple);
+                let gameover = snake.update(&mut apple);
+                if gameover{
+                    window.set_should_close(true);
+                }
             }
         }
 
