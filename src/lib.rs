@@ -24,7 +24,6 @@ pub mod snake_game{
         }
     }
 
-
     pub struct Snake{
         pub scale: f64,
         pub position: [f64;2],
@@ -45,7 +44,7 @@ pub mod snake_game{
         }
 
         pub fn draw(&self, c: piston_window::Context, g: &mut piston_window::G2d,){
-            for (index,snake_cell) in self.body.iter().enumerate() {
+            for snake_cell in self.body.iter() {
                 piston_window::rectangle(self.color, [snake_cell[0], snake_cell[1],self.scale, self.scale], c.transform, g);
             }
         }

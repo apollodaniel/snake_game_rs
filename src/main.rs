@@ -1,4 +1,4 @@
-use piston::{CloseArgs, CloseEvent, EventLoop, PressEvent, UpdateEvent, Window};
+use piston::{EventLoop, PressEvent, UpdateEvent, Window};
 use snake_game_piston::snake_game::{self, Apple};
 
 
