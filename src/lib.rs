@@ -49,12 +49,14 @@ pub mod snake_game{
         }
 
         pub fn change_direction(&mut self, key: piston::Key){
-            match key {
-                piston::Key::A => self.direction = Direction::Left,
-                piston::Key::D => self.direction = Direction::Right,
-                piston::Key::W => self.direction = Direction::Top,
-                piston::Key::S => self.direction = Direction::Down,
-                _=>{}
+            if matches!(key, piston::Key::A) && !matches!(self.direction, Direction::Right){
+                self.direction = Direction::Left;
+            }else if matches!(key, piston::Key::D) && !matches!(self.direction, Direction::Left){
+                self.direction = Direction::Right;
+            }else if matches!(key, piston::Key::W) && !matches!(self.direction, Direction::Down) {
+                self.direction = Direction::Top;
+            }else if matches!(key, piston::Key::S) && !matches!(self.direction, Direction::Top) {
+                self.direction = Direction::Down;
             }
         }
 
