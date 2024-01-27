@@ -71,7 +71,18 @@ pub mod snake_game{
             }
             
             self.position = [ (self.direction.value()[0]*get_cell_size()) + self.position[0], (self.direction.value()[1]*get_cell_size()) + self.position[1]];
-            
+
+            if self.position[0] == WINDOW_SIZE{
+                self.position[0] = 0.0;
+            }else if self.position[0] == -get_cell_size(){
+                self.position[0] = WINDOW_SIZE - get_cell_size();
+            }
+            if self.position[1] == WINDOW_SIZE{
+                self.position[1] = 0.0;
+            }else if self.position[1] == -get_cell_size(){
+                self.position[1] = WINDOW_SIZE - get_cell_size();
+            }
+
             let mut old_pos = self.body[0];
             self.body[0] = self.position;
             for pos in self.body[1..].iter_mut(){
